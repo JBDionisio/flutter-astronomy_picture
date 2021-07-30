@@ -1,0 +1,28 @@
+name: astronomy_picture
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #architecture
+  dio: 4.0.0-prev3
+  flutter_modular: ^3.0.2+1
+  effective_dart: ^1.3.0
+  rx_notifier: ^1.0.0
+
+dev_dependencies:
+  mocktail: ^0.1.1
+  flutter_test:
+    sdk: flutter
+
+# The following section is specific to Flutter.
+flutter:
+  uses-material-design: true
