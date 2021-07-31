@@ -42,9 +42,7 @@ class HomeController {
 
     store.list.addAll(response);
     store.filteredList.addAll(response);
-    if (isUpdate) {
-      store.isUpdating = false;
-    }
+    store.isUpdating = false;
 
     store.list.sort((a, b) => b.date.compareTo(a.date));
     store.filteredList.sort((a, b) => b.date.compareTo(a.date));
