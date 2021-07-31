@@ -1,4 +1,3 @@
-import 'package:astronomy_picture/app/modules/home/presenter/components/info_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:rx_notifier/rx_notifier.dart';
@@ -6,6 +5,7 @@ import 'package:rx_notifier/rx_notifier.dart';
 import '../../../shared/components/theme_text_field.dart';
 import '../../../shared/data/extensions.dart';
 import '../../../shared/utils/app_state.dart';
+import 'components/info_card.dart';
 import 'home_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,6 +35,9 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                   child: ThemeTextField(
                     hintText: 'Search Item by title',
                     prefixIcon: Icon(Icons.search),
+                    onChanged: (value) {
+                      controller.filterImagesByTitle(value);
+                    },
                   ),
                 ),
                 RxBuilder(builder: (_) {
@@ -57,7 +60,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
   }
 
   Widget _imagesList(var size1) {
-    final list = controller.store.list;
+    final list = controller.store.filteredList;
     return (list.isNotEmpty)
         ? ListView.builder(
             shrinkWrap: true,
@@ -72,7 +75,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
             },
           )
         : Center(
-            child: Text('Não foram encontrados clientes.'),
+            child: Text('Não foram encontradas imagens.'),
           );
   }
 

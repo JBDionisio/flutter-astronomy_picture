@@ -38,4 +38,16 @@ class HomeController {
   Future<void> _errorFetchNasaData(IError response) async {
     store.fetchState = AppState.error;
   }
+
+  void filterImagesByTitle(String? value) {
+    store.fetchState = AppState.loading;
+    if (value != null && value.isNotEmpty) {
+      store.filteredList = store.list
+          .where((e) => e.title.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    } else {
+      store.filteredList = store.list;
+    }
+    store.fetchState = AppState.success;
+  }
 }
