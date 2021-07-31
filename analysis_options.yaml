@@ -1,0 +1,26 @@
+include: package:effective_dart/analysis_options.yaml
+
+analyzer:
+  enable-experiment:
+    - non-nullable
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+linter:
+  rules:
+    prefer_mixin: false
+    lines_longer_than_80_chars: false
+    public_member_api_docs: false
+    type_annotate_public_apis: false
+    avoid_catches_without_on_clauses: false
+    one_member_abstracts: false
+    prefer_single_quotes: true
+    avoid_print: true
+    always_declare_return_types: true
+    avoid_escaping_inner_quotes: true
+    avoid_redundant_argument_values: true
+    avoid_renaming_method_parameters: true
+    avoid_setters_without_getters: true
+    avoid_types_on_closure_parameters: true
+    await_only_futures: true
+    avoid_void_async: true
