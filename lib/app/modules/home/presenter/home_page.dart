@@ -17,8 +17,6 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
   late final ScrollController scrollController;
   late TextEditingController _searchController;
 
-  // late RxDisposer disposer;
-
   @override
   void initState() {
     super.initState();
@@ -52,9 +50,8 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
       onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Astronomy Pictures',
-          ),
+          title: Text('Astronomy Pictures'),
+          centerTitle: true,
         ),
         body: RefreshIndicator(
           onRefresh: () => controller.resetData(),
@@ -86,6 +83,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
                         return _onLoading();
                     }
                   }),
+                  SizedBox(height: size1 * 40),
                 ],
               ),
             ),
@@ -105,13 +103,13 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
             itemBuilder: (context, index) {
               final obj = list[index];
               return Padding(
-                padding: EdgeInsets.only(bottom: 24),
+                padding: EdgeInsets.only(bottom: 50),
                 child: InfoCard(nasaData: obj),
               );
             },
           )
         : Center(
-            child: Text('Não foram encontradas imagens.'),
+            child: Text('No images found.'),
           );
   }
 
@@ -121,7 +119,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
 
   Widget _onError() => Center(
         child: Text(
-          'Ocorreu um erro ao trazer os clientes.\nTente novamente mais tarde',
+          'There was an error\nTry again later.',
           textAlign: TextAlign.center,
         ),
       );
