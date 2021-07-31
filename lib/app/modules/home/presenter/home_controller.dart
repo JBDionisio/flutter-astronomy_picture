@@ -31,7 +31,8 @@ class HomeController {
   Future<void> _okFetchNasaData(List<NasaDataEntity> response) async {
     store.fetchState = AppState.success;
 
-    print(response);
+    store.list = response;
+    store.filteredList = response;
   }
 
   Future<void> _errorFetchNasaData(IError response) async {
