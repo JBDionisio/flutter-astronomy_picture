@@ -14,6 +14,37 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends ModularState<HomePage, HomeController> {
+  late final ScrollController scrollController;
+  late TextEditingController _searchController;
+
+  // late RxDisposer disposer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _searchController = TextEditingController(text: '');
+
+    scrollController = ScrollController();
+    scrollController.addListener(() {
+      var maxScrollExtent = scrollController.position.maxScrollExtent;
+      var offset = scrollController.offset;
+
+      if (offset == maxScrollExtent &&
+          _searchController.text.isEmpty &&
+          !controller.store.isUpdating) {
+        controller.fetchNasaData(isUpdate: true);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size1 = context.constSize1;
@@ -25,33 +56,38 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
             'Astronomy Pictures',
           ),
         ),
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: size1 * 35),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  child: ThemeTextField(
-                    hintText: 'Search Item by title',
-                    prefixIcon: Icon(Icons.search),
-                    onChanged: (value) {
-                      controller.filterImagesByTitle(value);
-                    },
+        body: RefreshIndicator(
+          onRefresh: () => controller.resetData(),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: size1 * 35),
+            child: SingleChildScrollView(
+              controller: scrollController,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: ThemeTextField(
+                      controller: _searchController,
+                      hintText: 'Search Item by title',
+                      prefixIcon: Icon(Icons.search),
+                      onChanged: (value) {
+                        controller.filterImagesByTitle(value);
+                      },
+                    ),
                   ),
-                ),
-                RxBuilder(builder: (_) {
-                  final state = controller.store.fetchState;
-                  switch (state) {
-                    case AppState.error:
-                      return _onError();
-                    case AppState.success:
-                      return _imagesList(size1);
-                    default:
-                      return _onLoading();
-                  }
-                }),
-              ],
+                  RxBuilder(builder: (_) {
+                    final state = controller.store.fetchState;
+                    switch (state) {
+                      case AppState.error:
+                        return _onError();
+                      case AppState.success:
+                        return _imagesList(size1);
+                      default:
+                        return _onLoading();
+                    }
+                  }),
+                ],
+              ),
             ),
           ),
         ),

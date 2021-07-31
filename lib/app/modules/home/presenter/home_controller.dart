@@ -11,11 +11,17 @@ class HomeController {
   final GetNasaDataUsecase _getNasaData;
 
   HomeController(this.store, this._getNasaData) {
-    _fetchNasaData();
+    fetchNasaData();
   }
 
-  Future<void> _fetchNasaData() async {
+  Future<void> fetchNasaData({bool isUpdate = false}) async {
     store.fetchState = AppState.loading;
+
+    if (isUpdate) {
+      store.isUpdating = true;
+      updateDates();
+    }
+
     final params = GetNasaDataParams(
       startDate: store.startDate,
       endDate: store.endDate,
@@ -24,19 +30,29 @@ class HomeController {
 
     response.fold(
       _errorFetchNasaData,
-      _okFetchNasaData,
+      (r) => _okFetchNasaData(r, isUpdate),
     );
   }
 
-  Future<void> _okFetchNasaData(List<NasaDataEntity> response) async {
+  Future<void> _okFetchNasaData(
+    List<NasaDataEntity> response,
+    bool isUpdate,
+  ) async {
     store.fetchState = AppState.success;
 
-    store.list = response;
-    store.filteredList = response;
+    store.list.addAll(response);
+    store.filteredList.addAll(response);
+    if (isUpdate) {
+      store.isUpdating = false;
+    }
+
+    store.list.sort((a, b) => b.date.compareTo(a.date));
+    store.filteredList.sort((a, b) => b.date.compareTo(a.date));
   }
 
   Future<void> _errorFetchNasaData(IError response) async {
     store.fetchState = AppState.error;
+    store.isUpdating = false;
   }
 
   void filterImagesByTitle(String? value) {
@@ -49,5 +65,20 @@ class HomeController {
       store.filteredList = store.list;
     }
     store.fetchState = AppState.success;
+  }
+
+  void updateDates() {
+    store.endDate = store.startDate.subtract(Duration(days: 1));
+    store.startDate = store.startDate.subtract(Duration(days: 4));
+  }
+
+  Future<void> resetData() async {
+    store.endDate = DateTime.now();
+    store.startDate = DateTime.now().subtract(Duration(days: 3));
+
+    store.list.clear();
+    store.filteredList.clear();
+
+    fetchNasaData();
   }
 }

@@ -24,4 +24,8 @@ class HomeStore {
   final _filteredList = RxNotifier<List<NasaDataEntity>>([]);
   List<NasaDataEntity> get filteredList => _filteredList.value;
   set filteredList(List<NasaDataEntity> value) => _filteredList.value = value;
+
+  final _isUpdating = RxNotifier<bool>(false);
+  bool get isUpdating => _isUpdating.value;
+  set isUpdating(bool value) => _isUpdating.value = value;
 }
