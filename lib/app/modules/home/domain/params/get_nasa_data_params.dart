@@ -6,4 +6,9 @@ class GetNasaDataParams {
     required this.startDate,
     required this.endDate,
   });
+
+  Map<String, dynamic> toBodyRequest() => {
+        'start_date': '${startDate.year}-${startDate.month}-${startDate.day}',
+        'end_date': '${endDate.year}-${endDate.month}-${endDate.day}',
+      };
 }

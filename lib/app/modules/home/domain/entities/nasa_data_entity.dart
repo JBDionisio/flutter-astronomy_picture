@@ -3,13 +3,13 @@ class NasaDataEntity {
   final String url;
   final String explanation;
   final DateTime date;
-  final String copyright;
+  final String? copyright;
 
   NasaDataEntity({
     required this.title,
     required this.url,
     required this.explanation,
     required this.date,
-    required this.copyright,
+    this.copyright,
   });
 }

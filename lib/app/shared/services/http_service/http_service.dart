@@ -18,11 +18,6 @@ class HttpService extends DioForNative implements IHttpService {
   }
 
   @override
-  void setEnviroment() {
-    options.baseUrl = '?api_key=8s4pckVwHlab7pUcZrybU06dnwBfzjcacajSwRVp';
-  }
-
-  @override
   void setUpInterceptors() {
     interceptors.add(InfoInterceptors());
   }
@@ -30,5 +25,4 @@ class HttpService extends DioForNative implements IHttpService {
 
 abstract class IHttpService extends DioForNative {
   void setUpInterceptors();
-  void setEnviroment();
 }
