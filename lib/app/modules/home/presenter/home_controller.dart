@@ -16,9 +16,9 @@ class HomeController {
 
   Future<void> fetchNasaData({bool isUpdate = false}) async {
     store.fetchState = AppState.loading;
+    store.isUpdating = true;
 
     if (isUpdate) {
-      store.isUpdating = true;
       updateDates();
     }
 
@@ -79,6 +79,6 @@ class HomeController {
     store.list.clear();
     store.filteredList.clear();
 
-    fetchNasaData();
+    await fetchNasaData();
   }
 }
